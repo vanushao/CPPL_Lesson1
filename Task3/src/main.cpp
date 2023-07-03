@@ -1,25 +1,33 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
+#include <cmath>
+#include <functional>
 
-void vprint (const std::string &s, const std::vector<int> &vec){
-    std::cout << s << " ";
-    for(const auto v : vec){
-        std::cout << v << " ";
-    }
-    std::cout << std::endl;
-}
+const double PI = std::acos(-1);
 
 int main(){
     setlocale(LC_ALL, "Russian");
-    std::vector<int> vec = {4, 7, 9, 14, 12};
-    vprint ("Входные данные:", vec);
+    std::vector<double> angles;
+    for (int i = 30; i <= 90; i+=30) angles.push_back(i*PI/180);
 
-    std::for_each(vec.begin(), vec.end(), [](int &n){
-        n = (n%2 != 0)?n*3:n;
-    });
+    std::vector<std::function<void (double)>> functions;
 
-    vprint ("Выходные данные:", vec);
+    functions.push_back([](double a){
+        std::cout << "sin: " << std::sin(a) << " ";
+        });
+    functions.push_back([](double a){
+        std::cout << "cos: " << std::cos(a) << " ";
+        });
+    //functions.push_back([](double a){
+    //    std::cout << "tan: " << std::tan(a) << " ";
+    //    });
+
+    for (const auto& angle : angles) {
+	    std::cout << angle << ": ";
+	    for (const auto& function : functions)
+		    function(angle);
+	    std::cout << std::endl;
+    }
 
     return 0;
 }
